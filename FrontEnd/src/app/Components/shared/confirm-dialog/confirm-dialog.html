@@ -1,0 +1,22 @@
+@if (confirm.state(); as state) {
+  <div class="confirm-overlay">
+    <div class="confirm-dialog dashboard-stagger" role="dialog" aria-modal="true" aria-label="Confirmation dialog">
+      <h5 class="mb-2">{{ state.title }}</h5>
+      <p class="text-muted mb-3">{{ state.message }}</p>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary" (click)="confirm.cancel()">
+          {{ state.cancelText }}
+        </button>
+        <button
+          type="button"
+          class="btn"
+          [ngClass]="state.danger ? 'btn-danger' : 'btn-primary'"
+          (click)="confirm.accept()"
+        >
+          {{ state.confirmText }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,50 @@
+.topbar {
+	position: sticky;
+	top: 0;
+	z-index: 1030;
+	min-height: 64px;
+	border-bottom: 1px solid #d8e3f3;
+	background:
+		linear-gradient(95deg, rgba(15, 98, 254, 0.08), rgba(26, 159, 138, 0.08)),
+		#ffffff;
+	backdrop-filter: blur(4px);
+}
+
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.65rem;
+	color: #113355;
+	font-weight: 700;
+}
+
+.brand small {
+	font-size: 0.7rem;
+	color: #5d7694;
+	font-weight: 600;
+}
+
+.brand-mark {
+	width: 38px;
+	height: 38px;
+	border-radius: 11px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: linear-gradient(135deg, #0f62fe, #1a9f8a);
+	color: #ffffff;
+	box-shadow: 0 8px 16px rgba(17, 61, 161, 0.24);
+}
+
+.top-link {
+	color: #274865;
+	font-weight: 600;
+	border-radius: 8px;
+	padding-inline: 0.7rem;
+}
+
+.top-link:hover,
+.top-link.active {
+	color: #0f56dc;
+	background: rgba(15, 98, 254, 0.12);
+}

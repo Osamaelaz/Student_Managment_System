@@ -1,0 +1,98 @@
+.assign-shell {
+  border: 1px solid #d7dce5;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f8fbff 0%, #fdfdfd 100%);
+  box-shadow: 0 10px 24px rgba(17, 38, 146, 0.08);
+  padding: 1rem;
+}
+
+.assign-head h5 {
+  margin: 0;
+  font-weight: 700;
+  color: #0f2742;
+}
+
+.assign-head p {
+  color: #35516e;
+  font-size: 0.95rem;
+}
+
+.btn-assign {
+  border: 1px solid #0b57d0;
+  color: #0b57d0;
+  background: #ffffff;
+  font-weight: 600;
+}
+
+.btn-assign:hover {
+  background: #0b57d0;
+  color: #ffffff;
+}
+
+.assign-card {
+  border: 1px solid #dce4f1;
+  border-radius: 14px;
+  padding: 0.9rem;
+  background: #ffffff;
+  min-height: 320px;
+}
+
+.assign-list {
+  display: grid;
+  gap: 0.6rem;
+  max-height: 320px;
+  overflow: auto;
+  padding-right: 0.25rem;
+}
+
+.assign-item {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid #e6ebf3;
+  border-radius: 10px;
+  background: #fbfdff;
+  cursor: pointer;
+}
+
+.assign-item.assigned {
+  border-color: #b8d4ff;
+  background: #f0f7ff;
+}
+
+.assign-card h6 {
+  font-weight: 700;
+  color: #173a62;
+}
+
+.assign-item input[type='checkbox'] {
+  margin-top: 0.22rem;
+  transform: scale(1.05);
+}
+
+.item-title {
+  display: block;
+  font-weight: 600;
+  color: #0d2b4d;
+}
+
+.empty-note {
+  border: 1px dashed #c8d5e6;
+  border-radius: 10px;
+  padding: 0.75rem;
+  text-align: center;
+  color: #60758f;
+  background: #f7faff;
+}
+
+@media (max-width: 767px) {
+  .assign-shell {
+    padding: 0.8rem;
+  }
+
+  .assign-card {
+    min-height: auto;
+  }
+}

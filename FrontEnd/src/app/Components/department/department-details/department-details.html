@@ -1,0 +1,60 @@
+<div class="surface-card p-3 p-lg-4 my-3">
+  @if (isLoading()) {
+    <div class="page-loader">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading department details...
+    </div>
+  } @else if (isError()) {
+    <div class="text-center py-4">
+      <h3 class="text-danger">Department Not Found</h3>
+      <button class="btn btn-outline-primary btn-icon mt-2" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i>
+        Back to Departments
+      </button>
+    </div>
+  } @else if (department(); as dept) {
+    <div class="mb-3">
+      <h2 class="section-title">{{ dept.Dept_Name }}</h2>
+      <p class="section-subtitle">Department profile details.</p>
+    </div>
+
+    <div class="table-shell table-responsive mb-3">
+      <table class="table table-bordered align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Department Name</th>
+            <th>Description</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ dept.Dept_Name || '-' }}</td>
+            <td>{{ dept.Dept_Desc || '-' }}</td>
+            <td>{{ dept.Dept_Location || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h6 class="mb-2">Actions</h6>
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-warning btn-icon" [routerLink]="['/EditDepartment', dept.Dept_Id]">
+        <i class="bi bi-pencil-square"></i>
+        Edit
+      </button>
+      <a class="btn btn-outline-primary btn-icon" [routerLink]="['/DepartmentManageCourses', dept.Dept_Id]">
+        <i class="bi bi-link"></i>
+        Manage Courses
+      </a>
+      <button class="btn btn-danger btn-icon" (click)="deleteDepartment(dept.Dept_Id)">
+        <i class="bi bi-trash"></i>
+        Delete
+      </button>
+      <button class="btn btn-outline-dark btn-icon" (click)="goBack()">
+        <i class="bi bi-list-ul"></i>
+        Departments List
+      </button>
+    </div>
+  }
+</div>

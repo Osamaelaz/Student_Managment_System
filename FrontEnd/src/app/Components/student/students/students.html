@@ -1,0 +1,91 @@
+<div class="surface-card p-3 p-lg-4 my-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="section-title">Students</h2>
+      <p class="section-subtitle">Manage student records with quick actions.</p>
+    </div>
+    <a class="btn btn-primary btn-icon" [routerLink]="['/AddStudent']">
+      <i class="bi bi-person-plus"></i>
+      Add Student
+    </a>
+  </div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <input
+        class="form-control"
+        placeholder="Search students by name (e.g. Ahmed)"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+      />
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="page-loader">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading students...
+    </div>
+  } @else {
+    <div class="table-shell table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Department</th>
+            <th>Grades</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of filteredStudents(); track (student.St_Id > 0 ? student.St_Id : $index)) {
+            <tr>
+              <td>
+                <div class="fw-semibold">{{ student.St_Fname.trim() }} {{ student.St_Lname.trim() }}</div>
+              </td>
+              <td>{{ student.Dept_Name || '-' }}</td>
+              <td>
+                @if ((student.Grades?.length ?? 0) > 0) {
+                  <div class="d-flex flex-column gap-1 small">
+                    @for (grade of student.Grades ?? []; track (grade.Crs_Id > 0 ? grade.Crs_Id : $index)) {
+                      <div>
+                        <span class="fw-semibold">{{ grade.Crs_Name || ('Course #' + grade.Crs_Id) }}:</span>
+                        <span>{{ grade.Grade ?? '-' }}</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <span class="text-muted">No grades</span>
+                }
+              </td>
+              <td>
+                <div class="action-group">
+                  <button class="btn btn-sm btn-success btn-icon" [routerLink]="['/StudentDetails', student.St_Id]">
+                    <i class="bi bi-eye"></i>
+                    View
+                  </button>
+                  <button class="btn btn-sm btn-warning btn-icon" [routerLink]="['/EditStudent', student.St_Id]">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit
+                  </button>
+                  <button class="btn btn-sm btn-danger btn-icon" (click)="deleteStudent(student.St_Id)">
+                    <i class="bi bi-trash"></i>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="text-center py-4">No students found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

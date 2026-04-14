@@ -1,0 +1,121 @@
+<div class="container min-vh-100 d-flex align-items-center py-4">
+  <div class="row justify-content-center align-items-center w-100">
+    <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-4 p-lg-5">
+          <div class="text-center mb-4">
+            <h2 class="h3 fw-bold mb-2">Create Account</h2>
+            <p class="text-muted mb-0">Create your workspace account with a secure password.</p>
+          </div>
+
+          @if (errorMessage) {
+            <div class="alert alert-danger py-2">{{ errorMessage }}</div>
+          }
+
+          <form (ngSubmit)="submit()" #registerForm="ngForm" novalidate>
+            <div class="row g-4">
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="fullName">Full Name</label>
+                <input id="fullName" name="fullName" class="form-control form-control-lg" placeholder="Enter full name" [(ngModel)]="fullName" />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="userName">User Name</label>
+                <input
+                  id="userName"
+                  name="userName"
+                  class="form-control form-control-lg"
+                  placeholder="Choose a user name"
+                  [(ngModel)]="userName"
+                  required
+                  minlength="3"
+                  #userNameModel="ngModel"
+                  [class.is-invalid]="userNameModel.invalid && userNameModel.touched"
+                />
+                @if (userNameModel.invalid && userNameModel.touched) {
+                  <div class="invalid-feedback d-block">User name must be at least 3 characters.</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  class="form-control form-control-lg"
+                  placeholder="Enter your email"
+                  [(ngModel)]="email"
+                  required
+                  email
+                  #emailModel="ngModel"
+                  [class.is-invalid]="emailModel.invalid && emailModel.touched"
+                />
+                @if (emailModel.invalid && emailModel.touched) {
+                  <div class="invalid-feedback d-block">Enter a valid email address.</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="password">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  class="form-control form-control-lg"
+                  placeholder="Create password"
+                  [(ngModel)]="password"
+                  required
+                  minlength="6"
+                  #passwordModel="ngModel"
+                  [class.is-invalid]="passwordModel.invalid && passwordModel.touched"
+                />
+                @if (passwordModel.invalid && passwordModel.touched) {
+                  <div class="invalid-feedback d-block">Password must be at least 6 characters.</div>
+                }
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold" for="confirmPassword">Confirm Password</label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  class="form-control form-control-lg"
+                  placeholder="Repeat password"
+                  [(ngModel)]="confirmPassword"
+                  required
+                  minlength="6"
+                  #confirmPasswordModel="ngModel"
+                  [class.is-invalid]="(confirmPasswordModel.invalid && confirmPasswordModel.touched) || (confirmPassword && password && confirmPassword !== password)"
+                />
+                @if (confirmPasswordModel.invalid && confirmPasswordModel.touched) {
+                  <div class="invalid-feedback d-block">Confirmation password must be at least 6 characters.</div>
+                } @else if (confirmPassword && password && confirmPassword !== password) {
+                  <div class="invalid-feedback d-block">Passwords do not match.</div>
+                }
+              </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+              @if (!isUserLogged) {
+                <button class="btn btn-primary btn-lg w-100 mt-3" type="submit" [disabled]="registerForm.invalid || isLoading() || password !== confirmPassword">
+                  @if (isLoading()) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Creating...
+                  } @else {
+                    Register
+                  }
+                </button>
+                <a class="btn btn-outline-secondary" routerLink="/Login">Back to Login</a>
+              } @else {
+                <button class="btn btn-danger" type="button" (click)="logout()">Logout</button>
+                <a class="btn btn-outline-secondary" routerLink="/Students">Go to Students</a>
+              }
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

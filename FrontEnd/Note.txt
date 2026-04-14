@@ -1,0 +1,13 @@
+json server explaination web: https://www.npmjs.com/package/json-server
+
+install Package.json : npm init
+install json-server : npm i json-server  -g : for global in device any were
+run server: json-server db.json --watch
+provideHttpClinet in app.config to allow it in all project like routes
+use withFetch() that modern and not use XML Because Not Supported In all env
+Generate Environments to put url : ng g environments
+i face problem in loading data and it solved by declase isloading and use ChangeDetectorRef
+sweetAlert Website
+
+ReactiveForm : Handle Validation in ts
+Template : Handle in HTML

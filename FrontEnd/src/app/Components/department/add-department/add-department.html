@@ -1,0 +1,51 @@
+<div class="mx-auto my-4" style="max-width: 860px;">
+  <div class="form-shell">
+    <h2 class="section-title mb-1">Add Department</h2>
+    <p class="section-subtitle mb-3">Create a new department in your organization structure.</p>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+
+    <form #deptForm="ngForm" (ngSubmit)="addDepartment()">
+      <div class="mb-3">
+        <label class="form-label" for="deptName">Department Name</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newDepartment.Dept_Name"
+          name="deptName"
+          id="deptName"
+          required
+          minlength="2"
+          #deptNameModel="ngModel"
+          [class.is-invalid]="deptNameModel.invalid && deptNameModel.touched"
+        />
+        <div [hidden]="deptNameModel.valid || deptNameModel.untouched" class="text-danger">
+          @if (deptNameModel.errors?.['required']) { <small class="d-block">Department name is required</small> }
+          @if (deptNameModel.errors?.['minlength']) { <small class="d-block">Minimum length 2 characters</small> }
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="deptDesc">Description</label>
+        <textarea class="form-control" [(ngModel)]="newDepartment.Dept_Desc" name="deptDesc" id="deptDesc"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="deptLocation">Location</label>
+        <input type="text" class="form-control" [(ngModel)]="newDepartment.Dept_Location" name="deptLocation" id="deptLocation" />
+      </div>
+
+      <button class="btn btn-primary btn-icon" type="submit" [disabled]="isLoading() || deptForm.invalid">
+        @if (!isLoading()) {
+          <i class="bi bi-building-add"></i>
+          Add Department
+        } @else {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Saving...
+        }
+      </button>
+    </form>
+  </div>
+</div>

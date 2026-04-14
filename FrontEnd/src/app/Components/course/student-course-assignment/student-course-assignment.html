@@ -1,0 +1,111 @@
+<div class="surface-card p-3 p-lg-4 my-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="section-title mb-1">Student Grades</h2>
+      <p class="section-subtitle mb-0">Filter by department and course, then update each student degree independently.</p>
+    </div>
+  </div>
+
+  <div class="row g-3 align-items-end mb-3">
+    <div class="col-md-6">
+      <label class="form-label">Department</label>
+      <select class="form-select" [(ngModel)]="selectedDeptId" (ngModelChange)="onDepartmentChanged()">
+        <option [ngValue]="0">Select department...</option>
+        @for (department of departments(); track (department.Dept_Id > 0 ? department.Dept_Id : $index)) {
+          <option [ngValue]="department.Dept_Id">{{ department.Dept_Name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Course</label>
+      <select class="form-select" [(ngModel)]="selectedCourseId" (ngModelChange)="onCourseChanged()" [disabled]="selectedDeptId <= 0">
+        <option [ngValue]="0">Select course...</option>
+        @for (course of courses(); track (course.Crs_Id > 0 ? course.Crs_Id : $index)) {
+          <option [ngValue]="course.Crs_Id">{{ course.Crs_Name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  @if (isLoadingFilters()) {
+    <div class="page-loader py-2">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading courses...
+    </div>
+  }
+
+  @if (isLoadingStudents()) {
+    <div class="page-loader py-2">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading students...
+    </div>
+  }
+
+  @if (selectedCourseId > 0) {
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+      <span class="dashboard-pill"><i class="bi bi-book"></i> Course: {{ selectedCourseName() }}</span>
+    </div>
+
+    <div class="table-shell table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>All Grades</th>
+            <th>Course Name</th>
+            <th style="width: 160px;">Degree</th>
+            <th style="width: 140px;" class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of studentRows(); track (student.St_Id > 0 ? student.St_Id : $index)) {
+            <tr>
+              <td>{{ student.St_Fname }} {{ student.St_Lname }}</td>
+              <td>
+                @if ((student.Grades?.length ?? 0) > 0) {
+                  <div class="d-flex flex-column gap-1 small">
+                    @for (grade of student.Grades ?? []; track (grade.Crs_Id > 0 ? grade.Crs_Id : $index)) {
+                      <div>
+                        <span class="fw-semibold">{{ grade.Crs_Name || ('Course #' + grade.Crs_Id) }}:</span>
+                        <span>{{ grade.Grade ?? '-' }}</span>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <span class="text-muted">No grades</span>
+                }
+              </td>
+              <td>{{ selectedCourseName() }}</td>
+              <td>
+                <input
+                  type="number"
+                  class="form-control form-control-sm"
+                  min="0"
+                  max="100"
+                  [ngModel]="student.degree"
+                  (ngModelChange)="updateDegree(student.St_Id, $event)"
+                />
+              </td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-success btn-icon" [disabled]="student.isSaving" (click)="applyDegree(student.St_Id)">
+                  @if (student.isSaving) {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Saving...
+                  } @else {
+                    <i class="bi bi-save"></i>
+                    Save
+                  }
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">No students found for this department and course.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

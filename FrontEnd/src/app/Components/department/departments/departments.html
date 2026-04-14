@@ -1,0 +1,81 @@
+<div class="surface-card p-3 p-lg-4 my-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="section-title">Departments</h2>
+      <p class="section-subtitle">Keep department structure clean and organized.</p>
+    </div>
+    <a class="btn btn-primary btn-icon" [routerLink]="['/AddDepartment']">
+      <i class="bi bi-building-add"></i>
+      Add Department
+    </a>
+  </div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <input
+        class="form-control"
+        placeholder="Search departments by name"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+      />
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="page-loader">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading departments...
+    </div>
+  } @else {
+    <div class="table-shell table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (department of filteredDepartments(); track (department.Dept_Id > 0 ? department.Dept_Id : $index)) {
+            <tr>
+              <td>
+                <div class="fw-semibold">{{ department.Dept_Name.trim() || '-' }}</div>
+              </td>
+              <td>
+                <div class="action-group">
+                  <a
+                    class="btn btn-sm btn-outline-primary btn-icon"
+                    [routerLink]="['/DepartmentManageCourses', department.Dept_Id]"
+                  >
+                    <i class="bi bi-link"></i>
+                    Manage Courses
+                  </a>
+                  <a class="btn btn-sm btn-success btn-icon" [routerLink]="['/DepartmentDetails', department.Dept_Id]">
+                    <i class="bi bi-eye"></i>
+                    View
+                  </a>
+                  <a class="btn btn-sm btn-warning btn-icon" [routerLink]="['/EditDepartment', department.Dept_Id]">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit
+                  </a>
+                  <button class="btn btn-sm btn-danger btn-icon" (click)="deleteDepartment(department.Dept_Id)">
+                    <i class="bi bi-trash"></i>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="text-center py-4">No departments found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

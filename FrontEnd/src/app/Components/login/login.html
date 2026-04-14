@@ -1,0 +1,76 @@
+<div class="container min-vh-100 d-flex align-items-center py-4">
+  <div class="row justify-content-center align-items-center w-100">
+    <div class="col-12 col-sm-10 col-md-6 col-lg-5">
+      <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-4 p-lg-5">
+              <div class="text-center mb-4">
+                <h2 class="h3 fw-bold mb-2">Login</h2>
+                <p class="text-muted mb-0">Sign in to Student Management System.</p>
+              </div>
+
+              @if (errorMessage) {
+                <div class="alert alert-danger py-2">{{ errorMessage }}</div>
+              }
+
+              <form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+                <div class="mb-4">
+                  <label class="form-label fw-semibold" for="userName">User Name</label>
+                  <input
+                    id="userName"
+                    name="userName"
+                    class="form-control form-control-lg"
+                    placeholder="Enter your user name"
+                    [(ngModel)]="userName"
+                    required
+                    minlength="3"
+                    #userNameModel="ngModel"
+                    [class.is-invalid]="userNameModel.invalid && userNameModel.touched"
+                  />
+                  @if (userNameModel.invalid && userNameModel.touched) {
+                    <div class="invalid-feedback d-block">User name must be at least 3 characters.</div>
+                  }
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label fw-semibold" for="password">Password</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="form-control form-control-lg"
+                    placeholder="Enter your password"
+                    [(ngModel)]="password"
+                    required
+                    minlength="6"
+                    #passwordModel="ngModel"
+                    [class.is-invalid]="passwordModel.invalid && passwordModel.touched"
+                  />
+                  @if (passwordModel.invalid && passwordModel.touched) {
+                    <div class="invalid-feedback d-block">Password must be at least 6 characters.</div>
+                  }
+                </div>
+
+                @if (!isUserLogged) {
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-primary btn-lg w-100 mt-3" type="submit" [disabled]="loginForm.invalid || isLoading()">
+                      @if (isLoading()) {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Signing in...
+                      } @else {
+                        Login
+                      }
+                    </button>
+                    <a class="btn btn-outline-secondary" routerLink="/Register">Create New Account</a>
+                  </div>
+                } @else {
+                  <div class="d-grid gap-2">
+                    <button class="btn btn-danger" type="button" (click)="logout()">Logout</button>
+                    <a class="btn btn-outline-secondary" routerLink="/Students">Go to Students</a>
+                  </div>
+                }
+              </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+@if (isUserLoggedIn) {
+	<app-header></app-header>
+
+	<div class="dashboard-layout container-fluid px-0">
+		<aside class="app-sidebar">
+			<!-- <div class="sidebar-head">
+				<p class="sidebar-eyebrow mb-1">Navigation</p>
+				<h6 class="mb-0">Student Management</h6>
+			</div> -->
+
+			<nav class="sidebar-nav">
+				<a class="side-link" routerLink="/Students" routerLinkActive="active-link">
+					<i class="bi bi-people"></i>
+					Students
+				</a>
+				<a class="side-link" routerLink="/Departments" routerLinkActive="active-link">
+					<i class="bi bi-diagram-3"></i>
+					Departments
+				</a>
+				<a class="side-link" routerLink="/Courses" routerLinkActive="active-link">
+					<i class="bi bi-journal-bookmark"></i>
+					Courses
+				</a>
+				<a class="side-link" routerLink="/StudentCourseAssignment" routerLinkActive="active-link">
+					<i class="bi bi-person-workspace"></i>
+					Student Assignment
+				</a>
+			</nav>
+		</aside>
+
+		<main class="app-main">
+			<div class="content-wrap page-enter">
+				<router-outlet></router-outlet>
+			</div>
+		</main>
+	</div>
+
+	<!-- <app-footer></app-footer> -->
+} @else {
+	<div class="auth-layout container-fluid">
+		<div class="auth-wrap page-enter">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+}
+
+<app-toast-host></app-toast-host>
+<app-confirm-dialog></app-confirm-dialog>

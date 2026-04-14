@@ -1,0 +1,90 @@
+<div class="assign-shell mt-3">
+  <div class="assign-head d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <div>
+      <h5 class="mb-1">Manage Department Courses</h5>
+      <p class="mb-0">Department: <strong>{{ deptName || '-' }}</strong></p>
+    </div>
+
+    @if (showToggle) {
+      <button class="btn btn-assign" [disabled]="deptId <= 0" (click)="togglePanel()">
+        {{ isOpen() ? 'Hide' : 'Manage Courses' }}
+      </button>
+    }
+  </div>
+
+  @if (isOpen()) {
+    <div class="assign-body mt-3">
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <span class="badge text-bg-primary">Assigned: {{ assignedCount() }}</span>
+        <span class="badge text-bg-secondary">Not Assigned: {{ availableCount() }}</span>
+        <span class="badge text-bg-warning" [hidden]="pendingChangesCount() === 0">Changes: {{ pendingChangesCount() }}</span>
+      </div>
+
+      @if (isLoading()) {
+        <div class="alert alert-light border">Loading courses...</div>
+      } @else {
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div class="assign-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Assigned Courses</h6>
+                <span class="badge text-bg-primary">{{ assignedCount() }}</span>
+              </div>
+              <p class="text-muted small mb-2">Uncheck to remove from this department.</p>
+
+              <div class="assign-list">
+                @for (course of assignedCourses(); track (course.Crs_Id > 0 ? course.Crs_Id : $index)) {
+                  <label class="assign-item assigned">
+                    <input
+                      type="checkbox"
+                      [checked]="isChecked(course.Crs_Id)"
+                      (change)="onCourseToggle(course.Crs_Id, $any($event.target).checked)"
+                    />
+                    <span class="item-title">{{ course.Crs_Name || '-' }}</span>
+                  </label>
+                } @empty {
+                  <div class="empty-note">No assigned courses.</div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="assign-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Available Courses</h6>
+                <span class="badge text-bg-secondary">{{ availableCount() }}</span>
+              </div>
+              <p class="text-muted small mb-2">Check to assign to this department.</p>
+
+              <div class="assign-list">
+                @for (course of availableCourses(); track (course.Crs_Id > 0 ? course.Crs_Id : $index)) {
+                  <label class="assign-item">
+                    <input
+                      type="checkbox"
+                      [checked]="isChecked(course.Crs_Id)"
+                      (change)="onCourseToggle(course.Crs_Id, $any($event.target).checked)"
+                    />
+                    <span class="item-title">{{ course.Crs_Name || '-' }}</span>
+                  </label>
+                } @empty {
+                  <div class="empty-note">No available courses.</div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <button class="btn btn-success" [disabled]="isSaving() || pendingChangesCount() === 0" (click)="saveChanges()">
+            {{ isSaving() ? 'Saving...' : 'Save Assignments' }}
+          </button>
+        </div>
+      }
+
+      @if (message()) {
+        <div class="alert alert-info mt-3 mb-0">{{ message() }}</div>
+      }
+    </div>
+  }
+</div>

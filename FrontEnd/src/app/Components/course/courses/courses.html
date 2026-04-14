@@ -1,0 +1,76 @@
+<div class="surface-card p-3 p-lg-4 my-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <h2 class="section-title">Courses</h2>
+      <p class="section-subtitle">Track and maintain your course catalog.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-primary btn-icon" [routerLink]="['/AddCourse']">
+        <i class="bi bi-journal-plus"></i>
+        Add Course
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-2 mb-3">
+    <div class="col-md-6">
+      <input
+        class="form-control"
+        placeholder="Search courses by name"
+        [ngModel]="searchText()"
+        (ngModelChange)="searchText.set($event)"
+      />
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="page-loader">
+      <div class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+      Loading courses...
+    </div>
+  } @else {
+    <div class="table-shell table-responsive">
+      <table class="table table-hover table-bordered align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Course Name</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (course of filteredCourses(); track (course.Crs_Id > 0 ? course.Crs_Id : $index)) {
+            <tr>
+              <td>
+                <div class="fw-semibold">{{ course.Crs_Name.trim() || '-' }}</div>
+              </td>
+              <td>
+                <div class="action-group">
+                  <a class="btn btn-sm btn-success btn-icon" [routerLink]="['/CourseDetails', course.Crs_Id]">
+                    <i class="bi bi-eye"></i>
+                    View
+                  </a>
+                  <a class="btn btn-sm btn-warning btn-icon" [routerLink]="['/EditCourse', course.Crs_Id]">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit
+                  </a>
+                  <button class="btn btn-sm btn-danger btn-icon" (click)="deleteCourse(course.Crs_Id)">
+                    <i class="bi bi-trash"></i>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="text-center py-4">No courses found.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

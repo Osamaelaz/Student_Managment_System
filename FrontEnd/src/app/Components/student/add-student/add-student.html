@@ -1,0 +1,73 @@
+<div class="mx-auto my-4" style="max-width: 860px;">
+  <div class="form-shell">
+    <h2 class="section-title mb-1">Add Student</h2>
+    <p class="section-subtitle mb-3">Create a student profile and assign a department.</p>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+
+    <form #stdForm="ngForm" (ngSubmit)="addStudent()">
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label" for="fname">First Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newStudent.St_Fname" name="fname" id="fname" required minlength="2" #fnameModel="ngModel" [class.is-invalid]="fnameModel.invalid && fnameModel.touched">
+          <div [hidden]="fnameModel.valid || fnameModel.untouched" class="text-danger">
+            @if (fnameModel.errors?.['required']) { <small class="d-block">First name is required</small> }
+            @if (fnameModel.errors?.['minlength']) { <small class="d-block">Minimum length 2 characters</small> }
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label" for="lname">Last Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newStudent.St_Lname" name="lname" id="lname" required minlength="2" #lnameModel="ngModel" [class.is-invalid]="lnameModel.invalid && lnameModel.touched">
+          <div [hidden]="lnameModel.valid || lnameModel.untouched" class="text-danger">
+            @if (lnameModel.errors?.['required']) { <small class="d-block">Last name is required</small> }
+            @if (lnameModel.errors?.['minlength']) { <small class="d-block">Minimum length 2 characters</small> }
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-0">
+        <div class="col-md-6">
+          <label class="form-label" for="age">Age</label>
+          <input type="number" class="form-control" [(ngModel)]="newStudent.St_Age" name="age" id="age" min="1" #ageModel="ngModel" [class.is-invalid]="ageModel.invalid && ageModel.touched">
+          <div [hidden]="ageModel.valid || ageModel.untouched" class="text-danger">
+            @if (ageModel.errors?.['min']) { <small class="d-block">Age must be at least 1</small> }
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label" for="deptId">Department</label>
+          <select class="form-select" [(ngModel)]="newStudent.Dept_Id" name="deptId" id="deptId" required #deptModel="ngModel" [class.is-invalid]="deptModel.invalid && deptModel.touched">
+            <option [ngValue]="null">Select Department</option>
+            @for (department of departments(); track department.Dept_Id) {
+              <option [ngValue]="department.Dept_Id">{{ department.Dept_Name }}</option>
+            }
+          </select>
+          <div [hidden]="deptModel.valid || deptModel.untouched" class="text-danger">
+            @if (deptModel.errors?.['required']) { <small class="d-block">Department is required</small> }
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 mt-3">
+        <label class="form-label" for="address">Address</label>
+        <input type="text" class="form-control" [(ngModel)]="newStudent.St_Address" name="address" id="address" #addressModel="ngModel">
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 mt-2">
+        <button class="btn btn-primary btn-icon" type="submit" [disabled]="isLoading() || stdForm.invalid">
+          @if (!isLoading()) {
+            <i class="bi bi-check-circle"></i>
+            Add Student
+          } @else {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Saving...
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

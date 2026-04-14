@@ -1,0 +1,79 @@
+<div class="mx-auto my-4" style="max-width: 780px;">
+  <div class="form-shell">
+    <h2 class="section-title mb-1">Add Course</h2>
+    <p class="section-subtitle mb-3">Add a new course and define its key settings.</p>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="addCourse()" #courseForm="ngForm">
+    <div class="mb-3">
+      <label for="courseName" class="form-label">Course Name</label>
+      <input
+        id="courseName"
+        name="courseName"
+        type="text"
+        class="form-control"
+        [(ngModel)]="newCourse.Crs_Name"
+        required
+        minlength="2"
+        #nameModel="ngModel"
+        [class.is-invalid]="nameModel.invalid && nameModel.touched"
+      />
+      <div [hidden]="nameModel.valid || nameModel.untouched" class="text-danger">
+        @if (nameModel.errors?.['required']) { <small class="d-block">Course name is required</small> }
+        @if (nameModel.errors?.['minlength']) { <small class="d-block">Minimum length is 2</small> }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="courseDuration" class="form-label">Duration</label>
+      <input
+        id="courseDuration"
+        name="courseDuration"
+        type="number"
+        class="form-control"
+        [(ngModel)]="newCourse.Crs_Duration"
+        required
+        min="1"
+        #durationModel="ngModel"
+        [class.is-invalid]="durationModel.invalid && durationModel.touched"
+      />
+      <div [hidden]="durationModel.valid || durationModel.untouched" class="text-danger">
+        @if (durationModel.errors?.['required']) { <small class="d-block">Duration is required</small> }
+        @if (durationModel.errors?.['min']) { <small class="d-block">Duration must be greater than 0</small> }
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="topicId" class="form-label">Topic Id</label>
+      <input
+        id="topicId"
+        name="topicId"
+        type="number"
+        class="form-control"
+        [(ngModel)]="newCourse.Top_Id"
+        required
+        min="1"
+        #topicModel="ngModel"
+        [class.is-invalid]="topicModel.invalid && topicModel.touched"
+      />
+      <div [hidden]="topicModel.valid || topicModel.untouched" class="text-danger">
+        @if (topicModel.errors?.['required']) { <small class="d-block">Topic id is required</small> }
+        @if (topicModel.errors?.['min']) { <small class="d-block">Topic id must be greater than 0</small> }
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="isLoading() || courseForm.invalid">
+      @if (isLoading()) {
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Saving...
+      } @else {
+        <i class="bi bi-journal-plus"></i>
+        Save Course
+      }
+    </button>
+    </form>
+  </div>
+</div>
