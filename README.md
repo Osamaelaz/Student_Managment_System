@@ -39,7 +39,7 @@ This project helps academic teams centralize day-to-day operations in one system
 
 ## Project Structure
 
-- API Labs/API01: Backend API project
+- BackEnd/API01: Backend API project
 - FrontEnd: Angular frontend app
 
 ## Prerequisites
@@ -52,7 +52,7 @@ This project helps academic teams centralize day-to-day operations in one system
 
 ### Backend config
 
-File: API Labs/API01/appsettings.json
+File: BackEnd/API01/appsettings.json
 
 - Connection string key: DefaultConnection
 - JWT settings: Jwt:Key, Jwt:Issuer, Jwt:Audience
@@ -73,7 +73,7 @@ File: FrontEnd/src/environments/environment.ts
 ### 1) Run Backend API
 
 ```powershell
-cd "API Labs/API01"
+cd "BackEnd/API01"
 dotnet restore
 # Optional first-time setup:
 # dotnet ef database update
@@ -122,7 +122,7 @@ You can also create users from the Register page.
 ### Backend
 
 ```powershell
-cd "API Labs/API01"
+cd "BackEnd/API01"
 dotnet build
 ```
 
