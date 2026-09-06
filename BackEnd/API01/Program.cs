@@ -110,16 +110,13 @@ namespace API02
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
 
-                //await db.Database.MigrateAsync();
+                await db.Database.MigrateAsync();
                 await SeedIdentityAsync(userManager, roleManager);
             }
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-                app.MapGet("/", () => Results.Redirect("/swagger"));
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.MapGet("/", () => Results.Redirect("/swagger"));
 
             //app.UseHttpsRedirection();
             app.UseCors(MyAllowSpecificOrigins);
